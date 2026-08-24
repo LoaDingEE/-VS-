@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EV vs 내연기관 자동차 총비용 비교</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f7fb;color:#172033;font-family:Arial,"Noto Sans KR",sans-serif}.wrap{max-width:1200px;margin:auto;padding:28px 18px 60px}
+.hero{background:#111827;color:white;border-radius:22px;padding:30px;margin-bottom:18px}h1{margin:0 0 8px;font-size:30px}.sub{color:#cbd5e1;line-height:1.6}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:white;border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 5px 20px #0000000b}h2{font-size:19px;margin:0 0 16px}
+.common{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.field{margin-bottom:13px}.field label{display:block;font-size:13px;color:#64748b;margin-bottom:6px}
+input,select{width:100%;padding:11px;border:1px solid #d8dee9;border-radius:10px;font-size:15px;background:white}.results{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.metric{background:#f8fafc;border-radius:14px;padding:16px}.metric small{color:#64748b}.metric b{display:block;font-size:22px;margin-top:7px}.compare{overflow:auto}.compare table{width:100%;border-collapse:collapse}.compare th,.compare td{padding:13px;border-bottom:1px solid #e5e7eb;text-align:right;white-space:nowrap}.compare th:first-child,.compare td:first-child{text-align:left}
+.save{color:#0f766e}.big{font-size:34px;font-weight:800}.note{font-size:12px;color:#64748b;line-height:1.65}.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:12px;font-weight:700;margin-bottom:10px}
+@media(max-width:850px){.grid,.common,.results{grid-template-columns:1fr}.hero{padding:22px}h1{font-size:24px}}
+</style><script type="text/javascript" nonce="688d97a524e64fce884ac74df1f" src="//local.adguard.org?ts=1787541526244&amp;type=content-script&amp;dmn=chatgpt.com&amp;url=https%3A%2F%2Fchatgpt.com%2Fbackend-api%2Festuary%2Fcontent%3Fid%3Dfile_00000000ab78820680059b0e1b5de33b%26ts%3D496539%26p%3Dfs%26cid%3D1%26sig%3Dff96de46c1b063ce387edab96e8e6a9e1a627dc2aaef07174e7e96dab097dbdb%26v%3D0&amp;app=chrome.exe&amp;css=2&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script><script type="text/javascript" nonce="688d97a524e64fce884ac74df1f" src="//local.adguard.org?ts=1787541526244&amp;name=AdGuard%20Extra&amp;name=AdGuard%20Popup%20Blocker&amp;type=user-script"></script></head><body><div class="wrap">
+<section class="hero"><div class="badge">자동차 총보유비용 계산기</div><h1>⚡ 전기차 vs ⛽ 내연기관차</h1><div class="sub">차량가격, 취등록세, 충전손실, 보험료, 자동차세, 유지비를 반영해 월간·연간·장기 비용을 비교합니다.</div></section>
+
+<div class="card"><h2>⚙️ 공통 조건</h2><div class="common">
+<div class="field"><label>월 주행거리 (km)</label><input id="km" type="number" value="2000"></div>
+<div class="field"><label>비교 기간 (년)</label><select id="years"><option>1</option><option>3</option><option selected>5</option><option>10</option></select></div>
+<div class="field"><label>휘발유 단가 (원/L)</label><input id="fuelRate" type="number" value="1700"></div>
+<div class="field"><label>충전 단가 (원/kWh)</label><input id="chargeRate" type="number" value="300"></div></div>
+<p class="note">전기차 충전비에는 <b>10% 충전 손실</b>이 자동 반영됩니다.</p></div>
+
+<div class="grid">
+<div class="card"><h2>⚡ 전기차</h2>
+<div class="field"><label>차량 가격 (만원)</label><input id="evPrice" type="number" value="5000"></div>
+<div class="field"><label>전비 (km/kWh)</label><input id="evEff" type="number" step="0.01" value="7.19"></div>
+<div class="field"><label>연 보험료 (만원)</label><input id="evIns" type="number" value="100"></div>
+<div class="field"><label>연 유지·소모품비 (만원)</label><input id="evMaint" type="number" value="50"></div>
+<div class="field"><label>전기차 취등록세 감면액 (만원)</label><input id="evDiscount" type="number" value="140"></div>
+<div class="field"><label>연 자동차세 (만원)</label><input id="evCarTax" type="number" value="13"></div>
+<p class="note">취등록세는 차량가격×7%를 기본으로 계산하고 입력한 전기차 감면액을 차감합니다. 실제 세율·감면 한도는 등록 조건에 따라 확인하세요.</p></div>
+
+<div class="card"><h2>🚙 내연기관 / 하이브리드</h2>
+<div class="field"><label>차량 종류</label><select id="iceType"><option value="ice">내연기관</option><option value="hybrid">하이브리드</option></select></div>
+<div class="field"><label>차량 가격 (만원)</label><input id="icePrice" type="number" value="4500"></div>
+<div class="field"><label>연비 (km/L)</label><input id="iceEff" type="number" step="0.1" value="13"></div>
+<div class="field"><label>연 보험료 (만원)</label><input id="iceIns" type="number" value="120"></div>
+<div class="field"><label>연 유지·소모품비 (만원)</label><input id="iceMaint" type="number" value="100"></div>
+<div class="field"><label>배기량 (cc)</label><input id="cc" type="number" value="2000"></div>
+<div class="field"><label>하이브리드 취등록세 감면액 (만원)</label><input id="hyDiscount" type="number" value="40"></div>
+<div class="field"><label>자동차세 연 감소율 (%)</label><input id="taxDrop" type="number" value="5"></div>
+<p class="note">하이브리드 선택 시 입력한 감면액을 취등록세에서 차감합니다. 자동차세는 비교용으로 매년 5% 감소하도록 계산합니다.</p></div></div>
+
+<div class="card"><h2>📊 핵심 비교</h2><div class="results">
+<div class="metric"><small>전기차 월 총비용</small><b id="evMonthly"></b></div><div class="metric"><small>내연기관/하이브리드 월 총비용</small><b id="iceMonthly"></b></div><div class="metric"><small>월 절감액</small><b class="save" id="monthlySave"></b></div>
+<div class="metric"><small>전기차 연간 유지비</small><b id="evAnnual"></b></div><div class="metric"><small>내연기관/하이브리드 연간 유지비</small><b id="iceAnnual"></b></div><div class="metric"><small>연간 절감액</small><b class="save" id="annualSave"></b></div></div></div>
+
+<div class="card"><h2>🧾 취등록세 자동 계산</h2><div class="compare"><table><thead><tr><th>항목</th><th>전기차</th><th>내연기관/하이브리드</th></tr></thead><tbody>
+<tr><td>차량 가격</td><td id="evPriceOut"></td><td id="icePriceOut"></td></tr><tr><td>기본 취득세(가정 7%)</td><td id="evBaseReg"></td><td id="iceBaseReg"></td></tr><tr><td>친환경차 감면</td><td id="evRegDiscount"></td><td id="iceRegDiscount"></td></tr><tr><td><b>최종 취득세(가정)</b></td><td><b id="evReg"></b></td><td><b id="iceReg"></b></td></tr>
+</tbody></table></div><p class="note">비교용으로 차량가격×7%를 적용했습니다. 실제 취득세 과세표준과 감면 한도·조건은 등록 시점의 지방세 규정을 확인해야 합니다.</p></div>
+
+<div class="card"><h2>📅 장기 총비용</h2><div class="compare"><table><thead><tr><th>항목</th><th>전기차</th><th>내연기관/하이브리드</th><th>차이 (EV-ICE)</th></tr></thead><tbody id="rows"></tbody></table></div></div>
+<div class="card"><h2>📉 연도별 자동차세</h2><div class="compare"><table><thead><tr><th>연차</th><th>전기차</th><th>내연기관/하이브리드</th></tr></thead><tbody id="taxRows"></tbody></table></div><p class="note">내연기관/하이브리드 자동차세는 직전 연도 세액의 95%로 감소하는 비교용 가정입니다.</p></div>
+<div class="card"><h2>⚖️ 구매가격 차이를 고려한 단순 손익분기점</h2><div class="big" id="breakEven"></div><p class="note">감가상각·잔존가치·금융이자는 제외한 단순 계산입니다.</p></div>
+</div>
+<script>
+const ids=["km","years","fuelRate","chargeRate","evPrice","evEff","evIns","evMaint","evDiscount","evCarTax","iceType","icePrice","iceEff","iceIns","iceMaint","cc","hyDiscount","taxDrop"];
+ids.forEach(id=>document.getElementById(id).addEventListener("input",calc));
+function n(id){return Number(document.getElementById(id).value)||0}function won(x){return Math.round(x/10000).toLocaleString("ko-KR",{maximumFractionDigits:0})+"만원"}function man(x){return Math.round(x/10000).toLocaleString("ko-KR")+"만원"}
+function calc(){
+const km=n("km"),y=n("years"),fuel=n("fuelRate"),charge=n("chargeRate"),evPrice=n("evPrice")*10000,icePrice=n("icePrice")*10000,type=document.getElementById("iceType").value;
+const evReg=Math.max(0,evPrice*.07-n("evDiscount")*10000),iceReg=Math.max(0,icePrice*.07-(type==="hybrid"?n("hyDiscount")*10000:0));
+const evInsWon=n("evIns")*10000, evMaintWon=n("evMaint")*10000, evTaxWon=n("evCarTax")*10000;
+const iceInsWon=n("iceIns")*10000, iceMaintWon=n("iceMaint")*10000;
+const evFuel=km/n("evEff")*1.10*charge,iceFuel=km/n("iceEff")*fuel,evAnnual=evFuel*12+evInsWon+evTaxWon+evMaintWon;
+const firstIceTax=n("cc")*200,taxDrop=n("taxDrop")/100;let iceTaxTotal=0,taxRows="";
+for(let i=1;i<=y;i++){let tax=firstIceTax*Math.pow(1-taxDrop,i-1);iceTaxTotal+=tax;taxRows+=`<tr><td>${i}년차</td><td>${won(evTaxWon)}</td><td>${won(tax)}</td></tr>`}
+const iceAnnual=iceFuel*12+iceInsWon+iceMaintWon+firstIceTax;
+document.getElementById("evMonthly").textContent=won(evAnnual/12);document.getElementById("iceMonthly").textContent=won(iceAnnual/12);document.getElementById("monthlySave").textContent=won((iceAnnual-evAnnual)/12);
+document.getElementById("evAnnual").textContent=won(evAnnual);document.getElementById("iceAnnual").textContent=won(iceAnnual);document.getElementById("annualSave").textContent=won(iceAnnual-evAnnual);
+document.getElementById("evPriceOut").textContent=man(evPrice);document.getElementById("icePriceOut").textContent=man(icePrice);document.getElementById("evBaseReg").textContent=won(evPrice*.07);document.getElementById("iceBaseReg").textContent=won(icePrice*.07);
+document.getElementById("evRegDiscount").textContent="-"+won(n("evDiscount")*10000);document.getElementById("iceRegDiscount").textContent="-"+won(type==="hybrid"?n("hyDiscount")*10000:0);document.getElementById("evReg").textContent=won(evReg);document.getElementById("iceReg").textContent=won(iceReg);document.getElementById("taxRows").innerHTML=taxRows;
+const evFuelTotal=evFuel*12*y,iceFuelTotal=iceFuel*12*y,evIns=evInsWon*y,iceIns=iceInsWon*y,evMaint=evMaintWon*y,iceMaint=iceMaintWon*y;
+const evTotal=evPrice+evReg+evFuelTotal+evIns+evTaxWon*y+evMaint,iceTotal=icePrice+iceReg+iceFuelTotal+iceIns+iceTaxTotal+iceMaint;
+document.getElementById("rows").innerHTML=`<tr><td>차량가격</td><td>${won(evPrice)}</td><td>${won(icePrice)}</td><td>${won(evPrice-icePrice)}</td></tr>
+<tr><td>취등록세</td><td>${won(evReg)}</td><td>${won(iceReg)}</td><td>${won(evReg-iceReg)}</td></tr><tr><td>충전/유류비</td><td>${won(evFuelTotal)}</td><td>${won(iceFuelTotal)}</td><td>${won(evFuelTotal-iceFuelTotal)}</td></tr>
+<tr><td>보험료</td><td>${won(evIns)}</td><td>${won(iceIns)}</td><td>${won(evIns-iceIns)}</td></tr><tr><td>자동차세</td><td>${won(evTaxWon*y)}</td><td>${won(iceTaxTotal)}</td><td>${won(evTaxWon*y-iceTaxTotal)}</td></tr>
+<tr><td>유지·소모품</td><td>${won(evMaint)}</td><td>${won(iceMaint)}</td><td>${won(evMaint-iceMaint)}</td></tr><tr><td><b>${y}년 총비용</b></td><td><b>${won(evTotal)}</b></td><td><b>${won(iceTotal)}</b></td><td><b>${won(evTotal-iceTotal)}</b></td></tr>`;
+const operatingSave=iceAnnual-evAnnual,purchaseGap=(evPrice+evReg)-(icePrice+iceReg);document.getElementById("breakEven").textContent=operatingSave>0&&purchaseGap>0?(purchaseGap/operatingSave).toFixed(1)+"년":"단순 손익분기점 없음";
+}calc();
+</script></body></html>
